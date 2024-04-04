@@ -1,6 +1,7 @@
 {
   "name": "@orama/crawly",
   "version": "0.0.1",
+  "exports": "./src/index.ts",
   "fmt": {
     "lineWidth": 100,
     "semiColons": false,

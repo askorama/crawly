@@ -1,4 +1,4 @@
-import slugify from 'https://esm.sh/slugify@1.6.6'
+import slugify from 'npm:slugify'
 
 export function parseSectionFromURL(url: string) {
   const uri = new URL(url)
@@ -14,7 +14,7 @@ export function getPathFromURL(url: string) {
 
 export function URLToAnchorPath(url: string, sectionTitle: string) {
   const path = getPathFromURL(url)
-  const anchor = slugify(sectionTitle, { lower: true, strict: true })
+  const anchor = slugify.default(sectionTitle, { lower: true, strict: true })
 
   return `${path}#${anchor}`
 }
