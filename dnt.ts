@@ -4,12 +4,13 @@ import pkg from "./deno.json" assert { type: "json" };
 await emptyDir("./npm");
 
 await build({
-  entryPoints: ["./src/main.ts"],
-  outDir: "./npm",
+  entryPoints: ["./src/index.ts"],
+  outDir: "./.npm",
   shims: {
     deno: false,
   },
   scriptModule: 'cjs',
+  typeCheck: false,
   test: false,
   package: {
     name: "@orama/crawly",
@@ -29,7 +30,7 @@ await build({
     }
   },
   postBuild() {
-    Deno.copyFileSync("LICENSE.md", "npm/LICENSE.md");
-    Deno.copyFileSync("README.md", "npm/README.md");
+    Deno.copyFileSync("LICENSE.md", ".npm/LICENSE.md");
+    Deno.copyFileSync("README.md", ".npm/README.md");
   },
 });
