@@ -1,5 +1,5 @@
 import { load } from 'https://esm.sh/cheerio@1.0.0-rc.12'
-import { URLToAnchorPath, parseSectionFromURL } from './utils.ts'
+import { parseSectionFromURL, URLToAnchorPath } from './utils.ts'
 
 export type GeneralPurposeCrawlerResult = {
   title: string
@@ -11,21 +11,21 @@ export type GeneralPurposeCrawlerResult = {
 
 export function generalPurposeCrawler(url: string, html: string): GeneralPurposeCrawlerResult[] {
   const $ = load(html)
-  
-  const results: GeneralPurposeCrawlerResult[] = [];
-  const category = '';
 
-  const firstH1Text = $('h1').first().clone().children().remove('script').end().text().trim();
+  const results: GeneralPurposeCrawlerResult[] = []
+  const category = ''
 
-  let currentHeaderText = firstH1Text;
-  let currentContent = '';
+  const firstH1Text = $('h1').first().clone().children().remove('script').end().text().trim()
+
+  let currentHeaderText = firstH1Text
+  let currentContent = ''
 
   for (const header of ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']) {
     $(header)
       .first()
       .nextAll()
       .each(function () {
-        const isHeader = $(this).is('h1, h2, h3, h4, h5, h6');
+        const isHeader = $(this).is('h1, h2, h3, h4, h5, h6')
         if (isHeader) {
           if (currentHeaderText && currentContent) {
             results.push({
@@ -34,14 +34,14 @@ export function generalPurposeCrawler(url: string, html: string): GeneralPurpose
               path: URLToAnchorPath(url, currentHeaderText),
               category,
               section: parseSectionFromURL(url),
-            });
+            })
           }
-          currentHeaderText = $(this).clone().children().remove('script').end().text().trim();
-          currentContent = '';
+          currentHeaderText = $(this).clone().children().remove('script').end().text().trim()
+          currentContent = ''
         } else if ($(this).is('p')) {
-          currentContent += `${$(this).clone().children().remove('script').end().text().trim()} `;
+          currentContent += `${$(this).clone().children().remove('script').end().text().trim()} `
         }
-      });
+      })
   }
 
   if (currentHeaderText && currentContent) {
@@ -51,8 +51,8 @@ export function generalPurposeCrawler(url: string, html: string): GeneralPurpose
       path: URLToAnchorPath(url, currentHeaderText),
       category,
       section: parseSectionFromURL(url),
-    });
+    })
   }
 
-  return results;
+  return results
 }
