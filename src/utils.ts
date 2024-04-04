@@ -1,4 +1,4 @@
-import slugify from 'npm:slugify'
+import slugify from 'npm:slugify@1.6.6'
 
 export function parseSectionFromURL(url: string) {
   const uri = new URL(url)

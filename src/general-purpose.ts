@@ -1,4 +1,4 @@
-import { load } from 'npm:cheerio'
+import { load } from 'npm:cheerio@1.0.0-rc.12'
 import { parseSectionFromURL, URLToAnchorPath } from './utils.ts'
 
 export type GeneralPurposeCrawlerResult = {
