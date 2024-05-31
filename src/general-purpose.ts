@@ -3,6 +3,8 @@ import { parseSectionFromURL, URLToAnchorPath } from './utils.ts'
 
 export type GeneralPurposeCrawlerOptions = {
   parseCodeBlocks?: boolean
+  customHeaderSelector?: string
+  customContentSelector?: string
 }
 
 export type GeneralPurposeCrawlerResult = {
@@ -15,6 +17,8 @@ export type GeneralPurposeCrawlerResult = {
 
 const defaultOptions: GeneralPurposeCrawlerOptions = {
   parseCodeBlocks: true,
+  customHeaderSelector: '[data-orama-header]',
+  customContentSelector: '[data-orama-content]',
 }
 
 export function generalPurposeCrawler(
@@ -31,7 +35,10 @@ export function generalPurposeCrawler(
   let currentContent = ''
 
   $('*').each(function () {
-    if ($(this).is('h1, h2, h3, h4, h5, h6')) {
+    if (
+      $(this).is('h1, h2, h3, h4, h5, h6') ||
+      $(this).is(crawlerOptions.customHeaderSelector)
+    ) {
       if (currentHeaderText && currentContent) {
         results.push({
           title: currentHeaderText,
@@ -46,6 +53,8 @@ export function generalPurposeCrawler(
     } else if (crawlerOptions.parseCodeBlocks && $(this).is('pre code')) {
       currentContent += `\n\n${$(this).text().trim()}\n\n`
     } else if ($(this).is('p')) {
+      currentContent += `${$(this).text().trim()} `
+    } else if ($(this).is(crawlerOptions.customContentSelector)) {
       currentContent += `${$(this).text().trim()} `
     }
   })
