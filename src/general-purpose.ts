@@ -47,6 +47,12 @@ export function generalPurposeCrawler(
       currentContent += `\n\n${$(this).text().trim()}\n\n`
     } else if ($(this).is('p')) {
       currentContent += `${$(this).text().trim()} `
+    } else if ($(this).is('ul, ol')) {
+      $(this)
+        .find('li')
+        .each(function () {
+          currentContent += `${$(this).text().trim()}\n`
+        })
     }
   })
 
