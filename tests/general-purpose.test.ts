@@ -75,3 +75,23 @@ Deno.test('General Purpose Crawler - Data attributes', async () => {
     },
   ])
 })
+
+Deno.test('General Purpose Crawler - Tables', async () => {
+  const mockFileURL = new URL('./mocks/mock-with-table.html', import.meta.url)
+  const HTMLFile = await Deno.readTextFile(mockFileURL.pathname)
+  const crawledContent = generalPurposeCrawler(
+    mockUrl,
+    HTMLFile,
+  )
+
+  assertEquals(crawledContent, [
+    {
+      title: "Hello, world!",
+      content: "Plan: Plan 1; Feature: Feature 1; Price: $10;\n" +
+        "Plan: Plan 2; Feature: Feature 2; Price: $20;",
+      path: "/open-source/usage/insert#hello-world",
+      category: "",
+      section: "open-source"
+    }
+  ])
+})
